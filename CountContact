@@ -1,0 +1,22 @@
+trigger CountContacts on Contact (After insert,after update,after delete,after undelete) {
+Set<id> conid = new set<Id>();
+    for(contact con:trigger.new){
+        if(con.Accountid!= null){
+            conid.add(con.Accountid);
+        }
+    }
+    if(trigger.isdelete){
+    for(contact con1:trigger.old){
+        if(con1.Accountid!= null){
+            conid.add(con1.Accountid);
+        }
+    }
+}
+    List<Account> acclist =[select id,Number_of_contact__c,(select id,Accountid from Contacts) from Account where Id IN:conid];
+    for(Account acc: acclist){
+
+        acc.Number_of_contact__c = acc.contacts.size();
+    }
+   
+   update acclist;
+}
