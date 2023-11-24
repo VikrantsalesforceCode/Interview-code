@@ -1,6 +1,6 @@
 public class DisplayAccountList {
  @AuraEnabled
     public static list<Account> fetchAccountRecords(){
-      return [select Name,Rating,Phone from Account Order By createdDate ASC LIMIT 10];        
+      return [select Name,Email,Phone from Account Order By createdDate DESC LIMIT 10];        
     }
 }
